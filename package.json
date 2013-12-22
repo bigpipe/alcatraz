@@ -1,0 +1,16 @@
+{
+  "name": "alcatraz",
+  "version": "0.0.0",
+  "description": "A high-security prison for your application code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "prison",
+    "jail",
+    "sandbox"
+  ],
+  "author": "Arnout Kazemier",
+  "license": "MIT"
+}
