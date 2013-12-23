@@ -4,16 +4,17 @@
  * Alcatraz is our source code sandboxing.
  *
  * @constructor
- * @param {String} id The of the method that is exposed as global.
+ * @param {String} method The global/method name that processes messages.
  * @param {String} source The actual code.
  * @api private
  */
-function Alcatraz(id, source) {
-  if (!(this instanceof Alcatraz)) return new Alcatraz(id, source);
+function Alcatraz(method, source, domain) {
+  if (!(this instanceof Alcatraz)) return new Alcatraz(method, source);
 
-  this.compiled = null;
+  this.domain = domain || ('undefined' !== typeof document ? document.domain : '');
+  this.method = 'if ('+method+') '+ method;
   this.source = source;
-  this.id = id;
+  this.compiled = null;
 }
 
 /**
@@ -26,6 +27,7 @@ function Alcatraz(id, source) {
  */
 Alcatraz.prototype.toString = function toString() {
   if (this.compiled) return this.compiled;
+
   return this.compiled = this.transform();
 };
 
@@ -38,14 +40,14 @@ Alcatraz.prototype.toString = function toString() {
  * @api private
  */
 Alcatraz.prototype.transform = function transform() {
-  var code = ('('+ (function fort(global) {
+  var code = ('('+ (function alcatraz(global) {
     //
     // When you toString a function which is created while in strict mode,
     // firefox will add "use strict"; to the body of the function. Chrome leaves
     // the source intact. Knowing this, we cannot blindly assume that we can
     // inject code after the first opening bracked `{`.
     //
-    this.fort();
+    this.alcatraz();
 
     /**
      * Simple helper function to do nothing.
@@ -68,6 +70,8 @@ Alcatraz.prototype.transform = function transform() {
         thing.attachEvent('on'+ evt, fn);
       } else if (thing.addEventListener) {
         thing.addEventListener(evt, fn, false);
+      } else {
+        thing['on'+ evt] = fn;
       }
 
       return { on: on };
@@ -76,7 +80,7 @@ Alcatraz.prototype.transform = function transform() {
     //
     // Force the same domain as our 'root' script.
     //
-    try { document.domain = '_fortress_domain_'; }
+    try { if ('_alcatraz_domain_') document.domain = '_alcatraz_domain_'; }
     catch (e) { /* FireFox 26 throws an Security error for this as we use eval */ }
 
     //
@@ -94,7 +98,7 @@ Alcatraz.prototype.transform = function transform() {
     //
     global.onerror = function onerror() {
       var a = Array.prototype.slice.call(arguments, 0);
-      this._fortress_id_({ type: 'error', scope: 'window.onerror', args: a });
+      this._alcatraz_method_({ type: 'error', scope: 'window.onerror', args: a });
       return true;
     };
 
@@ -147,7 +151,7 @@ Alcatraz.prototype.transform = function transform() {
         //
         // Proxy messages to the container.
         //
-        this._fortress_id_({
+        this._alcatraz_method_({
           attach: method in attach,
           type: 'console',
           scope: method,
@@ -169,14 +173,14 @@ Alcatraz.prototype.transform = function transform() {
     // http://www.nczonline.net/blog/2009/01/05/what-determines-that-a-script-is-long-running/
     //
     setInterval(function ping() {
-      this._fortress_id_({ type: 'ping' });
+      this._alcatraz_method_({ type: 'ping' });
     }, 1000);
 
     //
     // Add load listeners so we know when the iframe is alive and working.
     //
     on(global, 'load', function () {
-      this._fortress_id_({ type: 'load' });
+      this._alcatraz_method_({ type: 'load' });
     });
 
     //
@@ -186,9 +190,9 @@ Alcatraz.prototype.transform = function transform() {
     //
     var self = this;
     setTimeout(function timeout() {
-      try { self.fort(); }
+      try { self.alcatraz(); }
       catch (e) {
-        this._fortress_id_({ type: 'error', scope: 'iframe.start', args: [e] });
+        this._alcatraz_method_({ type: 'error', scope: 'iframe.start', args: [e] });
       }
     }, 0);
   })+').call({}, this)');
@@ -197,9 +201,9 @@ Alcatraz.prototype.transform = function transform() {
   // Replace our "template tags" with the actual content.
   //
   return code
-    .replace(/_fortress_domain_/g, document.domain)
-    .replace(/this\._fortress_id_/g, this.id)
-    .replace(/this\.fort\(\);/g, 'this.fort=function fort() {'+ this.source +'};');
+    .replace(/_alcatraz_domain_/g, this.domain)
+    .replace(/this\._alcatraz_method_/g, this.method)
+    .replace(/this\.alcatraz\(\);/g, 'this.alcatraz=function alcatraz() {'+ this.source +'};');
 };
 
 //

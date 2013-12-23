@@ -4,13 +4,21 @@
   "description": "A high-security prison for your application code",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha $(find test -name '*.test.js')"
   },
   "keywords": [
     "prison",
     "jail",
     "sandbox"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/3rd-Eden/alcatraz.git"
+  },
   "author": "Arnout Kazemier",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "pre-commit": "0.0.4",
+    "mocha": "~1.16.1"
+  }
 }
