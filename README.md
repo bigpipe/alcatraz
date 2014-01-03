@@ -1,5 +1,7 @@
 # Alcatraz
 
+[![Build Status](https://travis-ci.org/3rd-Eden/alcatraz.png?branch=master)](https://travis-ci.org/3rd-Eden/alcatraz)
+
 Alcatraz is high-security prison for your application code. It does this by
 wrapping your front-end code in an extra closure that can terminate hostile
 scripts by nuking global variables or introducing them in to the local scope and
