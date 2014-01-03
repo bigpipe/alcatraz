@@ -1,6 +1,6 @@
 {
   "name": "alcatraz",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A high-security prison for your application code",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "author": "Arnout Kazemier",
   "license": "MIT",
   "devDependencies": {
-    "pre-commit": "0.0.4",
-    "mocha": "~1.16.1"
+    "pre-commit": "0.0.x",
+    "mocha": "1.16.x"
   }
 }

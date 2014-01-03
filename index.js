@@ -6,6 +6,7 @@
  * @constructor
  * @param {String} method The global/method name that processes messages.
  * @param {String} source The actual code.
+ * @param {String} domain The domain name.
  * @api private
  */
 function Alcatraz(method, source, domain) {
