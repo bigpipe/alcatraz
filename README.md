@@ -1,6 +1,6 @@
 # Alcatraz
 
-[![Build Status](https://travis-ci.org/3rd-Eden/alcatraz.png?branch=master)](https://travis-ci.org/3rd-Eden/alcatraz)
+[![Build Status](https://travis-ci.org/bigpipe/alcatraz.png?branch=master)](https://travis-ci.org/bigpipe/alcatraz)
 
 Alcatraz is high-security prison for your application code. It does this by
 wrapping your front-end code in an extra closure that can terminate hostile
@@ -11,7 +11,7 @@ The primary objective of this module was to ensure that code can run safely
 within an `iframe` element in the browser without requiring any code rewriting.
 To see it's use for iframe sandboxing, please take a look at:
 
-https://github.com/3rd-Eden/containerization
+https://github.com/bigpipe/containerization
 
 Current alcatraz does:
 
