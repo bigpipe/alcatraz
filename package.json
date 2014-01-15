@@ -13,7 +13,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/3rd-Eden/alcatraz.git"
+    "url": "git://github.com/bigpipe/alcatraz.git"
   },
   "author": "Arnout Kazemier",
   "license": "MIT",
